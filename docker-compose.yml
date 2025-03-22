@@ -1,0 +1,28 @@
+services:
+
+    db:
+      image: postgres:latest
+      restart: always
+      container_name: db
+      # set shared memory limit when using docker-compose
+      shm_size: 128mb
+      # or set shared memory limit when deploy via swarm stack
+      # volumes:
+      #   - type: tmpfs
+      #     target: /dev/shm
+      #     tmpfs:
+      #       size: 134217728 # 128*2^20 byres = 128mb
+      ports:
+        - 5432:5432
+      environment:
+        POSTGRES_PASSWORD: binary
+
+    pgadmin4:
+      image: dpage/pgadmin4
+      restart: always
+      container_name: pgadmin4
+      ports:
+        - 8080:80
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=binary@binary.com
+        - PGADMIN_DEFAULT_PASSWORD=binary
