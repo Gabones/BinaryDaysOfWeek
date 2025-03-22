@@ -1,79 +1,80 @@
 # Binary Days of the Week
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/Gabones/BinaryDaysOfWeek/blob/master/README.pt-br.md)
 
-Este projeto é um exemplo educacional que demonstra como usar a representação binária de números para representar dias válidos de uma semana. A ideia principal é utilizar os bits de um número binário para indicar os dias da semana, onde cada bit representa um dia específico.
+This project is an educational example that demonstrates how to use the binary representation of numbers to represent valid days of the week. The main idea is to use the bits of a binary number to indicate the days of the week, where each bit represents a specific day.
 
-## Representação Binária dos Dias da Semana
+## Binary Representation of the Days of the Week
 
-Cada dia da semana é representado por um bit em um número binário de 8 bits:
+Each day of the week is represented by a bit in an 8-bit binary number:
 
-- **1** (00000001) = Domingo
-- **2** (00000010) = Segunda-feira
-- **4** (00000100) = Terça-feira
-- **8** (00001000) = Quarta-feira
-- **16** (00010000) = Quinta-feira
-- **32** (00100000) = Sexta-feira
-- **64** (01000000) = Sábado
+- **1** (00000001) = Sunday
+- **2** (00000010) = Monday
+- **4** (00000100) = Tuesday
+- **8** (00001000) = Wednesday
+- **16** (00010000) = Thursday
+- **32** (00100000) = Friday
+- **64** (01000000) = Saturday
 
-Para combinar múltiplos dias, basta somar os valores correspondentes. Por exemplo:
+To combine multiple days, simply add the corresponding values. For example:
 
-- Segunda-feira (2) + Quarta-feira (8) = **10** (00001010)
+- Monday (2) + Wednesday (8) = **10** (00001010)
 
-## Estrutura do Projeto
+## Project Structure
 
-O projeto é dividido em duas partes principais:
+The project is divided into two main parts:
 
 ### Backend
 
-O backend é implementado em C# com ASP.NET Core e utiliza o Entity Framework Core para persistência de dados. Ele fornece uma API para gerenciar diferentes representações de dias da semana:
+The backend is implemented in C# with ASP.NET Core and uses Entity Framework Core for data persistence. It provides an API to manage different representations of the days of the week:
 
-- **SchedulerBinaryEncoded**: Representação binária dos dias.
-- **SchedulerEnum**: Representação usando enums.
-- **SchedulerStringArray**: Representação usando arrays de strings.
+- **SchedulerBinaryEncoded**: Binary representation of the days.
+- **SchedulerEnum**: Representation using enums.
+- **SchedulerStringArray**: Representation using string arrays.
 
-#### Endpoints Principais
+#### Main Endpoints
 
-- **CRUD para SchedulerBinaryEncoded**: `/SchedulerBinaryEncoded`
-- **CRUD para SchedulerEnum**: `/SchedulerEnum`
-- **CRUD para SchedulerStringArray**: `/SchedulerStringArray`
+- **CRUD for SchedulerBinaryEncoded**: `/SchedulerBinaryEncoded`
+- **CRUD for SchedulerEnum**: `/SchedulerEnum`
+- **CRUD for SchedulerStringArray**: `/SchedulerStringArray`
 
-#### Configuração
+#### Configuration
 
-O backend utiliza PostgreSQL como banco de dados. Para configurar o ambiente de desenvolvimento, edite o arquivo `appsettings.Development.json` com as credenciais do banco.
+The backend uses PostgreSQL as the database. To configure the development environment, edit the `appsettings.Development.json` file with the database credentials.
 
 ### Frontend
 
-O frontend é implementado em React com TypeScript e utiliza Material-UI para a interface do usuário. Ele fornece uma interface para visualizar e manipular os dados do backend.
+The frontend is implemented in React with TypeScript and uses Material-UI for the user interface. It provides an interface to visualize and manipulate the backend data.
 
-#### Funcionalidades
+#### Features
 
-- **CRUD**: Interface para gerenciar tabelas de dados.
-- **Tabela Binária**: Exibição de números binários e sua relação com os dias da semana.
+- **CRUD**: Interface to manage data tables.
+- **Binary Table**: Displays binary numbers and their relation to the days of the week.
 
-## Como Executar
+## How to Run
 
-### Pré-requisitos
+### Prerequisites
 
-- Docker e Docker Compose
-- Node.js e npm
-- .NET SDK 9.0 ou superior
+- Docker and Docker Compose
+- Node.js and npm
+- .NET SDK 9.0 or higher
 
-### Passos
+### Steps
 
-1. **Subir o Banco de Dados**:
+1. **Start the Database**:
    ```bash
    docker-compose up -d
    ```
-2. **Executar o Backend**:
+2. **Run the Backend**:
     ```bash
     dotnet watch run
     ```
-3. **Executar o Frontend**:
+3. **Run the Frontend**:
     ```bash
     yarn install
     yarn dev
     ```
 
-### Tecnologias Utilizadas
+### Technologies Used
 
 - Backend:
     - ASP.NET Core
@@ -87,3 +88,6 @@ O frontend é implementado em React com TypeScript e utiliza Material-UI para a 
 - Infraestrutura
     - Docker
     - Docker Compose
+
+### License
+This project is for educational purposes only and does not have a specific license.
