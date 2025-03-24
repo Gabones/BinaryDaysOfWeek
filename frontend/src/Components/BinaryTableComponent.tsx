@@ -1,13 +1,28 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid2 } from '@mui/material';
+import React from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Grid2
+} from "@mui/material";
 
 const generateBinaryNumbers = (bits: number) => {
     const numberOfRows = Math.pow(2, bits);
     const binaryNumbers = [];
     const zero = 0;
-    binaryNumbers.push({ decimal: zero, binary: zero.toString(2).padStart(bits, '0') });
+    binaryNumbers.push({
+        decimal: zero,
+        binary: zero.toString(2).padStart(bits, "0")
+    });
     for (let i = 1; i < numberOfRows; i = i * 2) {
-        binaryNumbers.push({ decimal: i, binary: i.toString(2).padStart(bits, '0') });
+        binaryNumbers.push({
+            decimal: i,
+            binary: i.toString(2).padStart(bits, "0")
+        });
     }
     return binaryNumbers;
 };
@@ -38,15 +53,33 @@ const BinaryTable: React.FC = () => {
                             <TableRow key={index}>
                                 <TableCell>{result.decimal}</TableCell>
                                 <TableCell>{result.binary}</TableCell>
-                                <TableCell>{result.binary.split("").reverse().join("")}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[0]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[1]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[2]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[3]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[4]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[5]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[6]}</TableCell>
-                                <TableCell>{result.binary.split("").reverse()[7]}</TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse().join("")}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[0]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[1]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[2]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[3]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[4]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[5]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[6]}
+                                </TableCell>
+                                <TableCell>
+                                    {result.binary.split("").reverse()[7]}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

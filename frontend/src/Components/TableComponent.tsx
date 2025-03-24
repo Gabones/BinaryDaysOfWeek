@@ -1,55 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Box } from '@mui/material';
-import { getData, createData, updateData, deleteData } from '../api';
+import { useState } from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    Box,
+    IconButton,
+    Grid2,
+    CircularProgress
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { customAxios } from "../api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Delete, Edit } from "@mui/icons-material";
+import { EditModal } from "./EditModal";
+import { SchedulerDto, TableComponentProps } from "../dto";
 
-const TableComponent = ({ tableName }) => {
-    const [data, setData] = useState<any>([]);
-    const [open, setOpen] = useState(false);
-    const [currentItem, setCurrentItem] = useState({ id: '', name: '' });
+const TableComponent = ({ tableName }: TableComponentProps) => {
+    const [itemId, setItemId] = useState<number | undefined | null>(null);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        const result = await getData(tableName);
-        setData(result);
-    };
-
-    const handleClickOpen = (item = { id: '', name: '' }) => {
-        setCurrentItem(item);
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        setCurrentItem({ id: '', name: '' });
-    };
-
-    const handleSave = async () => {
-        if (currentItem.id) {
-            await updateData(tableName, currentItem);
-        } else {
-            await createData(tableName, currentItem);
+    const { data, isLoading, refetch } = useQuery<SchedulerDto[]>({
+        queryKey: [tableName],
+        queryFn: async () => {
+            const response = await customAxios.get(tableName);
+            return response.data;
         }
-        fetchData();
-        handleClose();
+    });
+
+    const { mutateAsync } = useMutation({
+        mutationFn: async (itemId: number) => {
+            const response = await customAxios.delete(`${tableName}/${itemId}`);
+            return response;
+        }
+    });
+
+    const handleClickOpen = (id: number | undefined | null) => () => {
+        setItemId(id);
     };
 
-    const handleDelete = async (id: any) => {
-        await deleteData(tableName, id);
-        fetchData();
-    };
-
-    const handleChange = (e: any) => {
-        setCurrentItem({ ...currentItem, [e.target.name]: e.target.value });
+    const handleDelete = (id: number) => async () => {
+        await mutateAsync(id);
     };
 
     return (
         <Paper>
             <Box p={1}>
-                <Button variant="text" color="primary" onClick={() => handleClickOpen()}>
-                    Add Item
+                <Button
+                    startIcon={<AddIcon />}
+                    variant="text"
+                    color="primary"
+                    onClick={handleClickOpen(0)}
+                    sx={{ textTransform: "none" }}
+                >
+                    {tableName}
                 </Button>
             </Box>
             <TableContainer>
@@ -62,46 +69,54 @@ const TableComponent = ({ tableName }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((item: any) => (
-                            <TableRow key={item.id}>
-                                <TableCell>{item.id}</TableCell>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>
-                                    <Button variant="contained" color="primary" onClick={() => handleClickOpen(item)}>
-                                        Edit
-                                    </Button>
-                                    <Button variant="contained" color="secondary" onClick={() => handleDelete(item.id)}>
-                                        Delete
-                                    </Button>
+                        {isLoading && !data ? (
+                            <TableRow>
+                                <TableCell colSpan={3}>
+                                    <Grid2
+                                        container
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        p={2}
+                                    >
+                                        <CircularProgress />
+                                    </Grid2>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        ) : (
+                            data?.map((item) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>{item.id}</TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>
+                                        <Grid2 container spacing={2}>
+                                            <IconButton
+                                                color="primary"
+                                                onClick={handleClickOpen(
+                                                    item.id
+                                                )}
+                                            >
+                                                <Edit />
+                                            </IconButton>
+                                            <IconButton
+                                                color="error"
+                                                onClick={handleDelete(item.id)}
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        </Grid2>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>{currentItem.id ? 'Edit Item' : 'Add Item'}</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        name="name"
-                        label="Name"
-                        type="text"
-                        fullWidth
-                        value={currentItem.name}
-                        onChange={handleChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSave} color="primary">
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <EditModal
+                tableName={tableName}
+                itemId={itemId}
+                setItemId={setItemId}
+                refetch={refetch}
+            />
         </Paper>
     );
 };

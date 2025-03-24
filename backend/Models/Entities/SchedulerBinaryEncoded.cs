@@ -4,8 +4,8 @@ namespace BinaryDaysOfWeekApi.Models.Entities;
 
 public class SchedulerBinaryEncoded
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    
     public string Name { get; set; } = string.Empty;
 
     /// <summary>

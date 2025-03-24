@@ -13,6 +13,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PublicPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,14 +42,14 @@ app.MapPost("/SchedulerBinaryEncoded", async (ApplicationContext context, Schedu
 }).WithName("CreateSchedulerBinaryEncoded");
 
 // Read
-app.MapGet("/SchdulerBinaryEncoded", async (ApplicationContext context) =>
+app.MapGet("/SchedulerBinaryEncoded", async (ApplicationContext context) =>
 {
-    return Results.Ok(await context.SchedulerBinaryEncoded.ToListAsync());
+    return Results.Ok(await context.SchedulerBinaryEncoded.Select(_ => new { _.Id, _.Name }).ToListAsync());
 }).WithName("ListSchedulerBinaryEncoded");
 
-app.MapGet("/SchedulerBinaryEncoded/{schedulerBinaryEncodedId}", (int schedulerBinaryEncodedId, ApplicationContext context) =>
+app.MapGet("/SchedulerBinaryEncoded/{schedulerBinaryEncodedId}", async (int schedulerBinaryEncodedId, ApplicationContext context) =>
 {
-    return Results.Ok(context.SchedulerBinaryEncoded.FirstAsync(_ => _.Id == schedulerBinaryEncodedId));
+    return Results.Ok(await context.SchedulerBinaryEncoded.FirstAsync(_ => _.Id == schedulerBinaryEncodedId));
 }).WithName("QuerySchedulerBinaryEncoded");
 
 // Update
@@ -77,7 +85,7 @@ app.MapPost("/SchedulerEnum", async (ApplicationContext context, SchedulerEnum s
 // Read
 app.MapGet("/SchedulerEnum", async (ApplicationContext context) =>
 {
-    return Results.Ok(await context.SchedulerEnums.ToListAsync());
+    return Results.Ok(await context.SchedulerEnums.Select(_ => new { _.Id, _.Name }).ToListAsync());
 }).WithName("ListSchedulerEnum");
 app.MapGet("/SchedulerEnum/{schedulerEnumId}", async (int schedulerEnumId, ApplicationContext context) =>
 {
@@ -115,7 +123,7 @@ app.MapPost("/SchedulerStringArray", async (ApplicationContext context, Schedule
 // Read
 app.MapGet("/SchedulerStringArray", async (ApplicationContext context) =>
 {
-    return Results.Ok(await context.SchedulerStringArrays.ToListAsync());
+    return Results.Ok(await context.SchedulerStringArrays.Select(_ => new { _.Id, _.Name }).ToListAsync());
 }).WithName("ListSchedulerStringArray");
 app.MapGet("/SchedulerStringArray/{schedulerStringArrayId}", async (int schedulerStringArrayId, ApplicationContext context) =>
 {
@@ -140,5 +148,7 @@ app.MapDelete("/SchedulerStringArray/{schedulerStringArrayId}", async (int sched
     return Results.NoContent();
 }).WithName("DeleteSchedulerStringArray");
 #endregion
+
+app.UseCors("PublicPolicy");
 
 app.Run();
