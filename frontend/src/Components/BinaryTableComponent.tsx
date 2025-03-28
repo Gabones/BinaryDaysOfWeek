@@ -1,14 +1,14 @@
-import React from "react";
 import {
+    Grid2,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
-    Paper,
-    Grid2
+    TableRow
 } from "@mui/material";
+import React from "react";
 
 const generateBinaryNumbers = (bits: number) => {
     const numberOfRows = Math.pow(2, bits);

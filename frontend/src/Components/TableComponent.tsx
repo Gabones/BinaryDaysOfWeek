@@ -1,24 +1,24 @@
-import { useState } from "react";
+import { Delete, Edit } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
 import {
+    Box,
+    Button,
+    CircularProgress,
+    Grid2,
+    IconButton,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
-    Paper,
-    Button,
-    Box,
-    IconButton,
-    Grid2,
-    CircularProgress
+    TableRow
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { customAxios } from "../api";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Delete, Edit } from "@mui/icons-material";
-import { EditModal } from "./EditModal";
+import { useState } from "react";
+import { customAxios } from "../api";
 import { SchedulerDto, TableComponentProps } from "../dto";
+import { EditModal } from "./EditModal";
 
 const TableComponent = ({ tableName }: TableComponentProps) => {
     const [itemId, setItemId] = useState<number | undefined | null>(null);

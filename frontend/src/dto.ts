@@ -4,9 +4,12 @@ export interface SchedulerBinaryEncodedDto {
     daysOfWeek: number;
 }
 
-export interface SchedulerEnumDto {
+export interface SchedulerEnumDto extends DaysOfWeekEnumDto {
     id: number;
     name: string;
+}
+
+export interface DaysOfWeekEnumDto {
     sunday: Allow;
     monday: Allow;
     tuesday: Allow;

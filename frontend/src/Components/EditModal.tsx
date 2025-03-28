@@ -5,22 +5,29 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
     Grid2,
     Stack,
+    Switch,
     TextField,
     ToggleButton,
     ToggleButtonGroup
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { customAxios } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import React, { useEffect, useState } from "react";
+import { customAxios } from "../api";
 import {
+    Allow,
     DaysOfWeek,
     DaysOfWeekArray,
-    SchedulerDto,
-    EditModalProps
+    DaysOfWeekEnumDto,
+    EditModalProps,
+    SchedulerDto
 } from "../dto";
-import { AxiosResponse } from "axios";
 
 export const EditModal = ({
     tableName,
@@ -33,6 +40,9 @@ export const EditModal = ({
     const [stringArray, setStringArray] = useState<string[]>([]);
 
     const [binaryValue, setBinaryValue] = useState<string>("");
+
+    const [schedulerEnum, setSchedulerEnum] =
+        useState<DaysOfWeekEnumDto | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -169,6 +179,18 @@ export const EditModal = ({
         binaryToArray(binaryStr);
     };
 
+    const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSchedulerEnum(
+            (oldState) =>
+                ({
+                    ...oldState,
+                    [event.target.name]: event.target.checked
+                        ? Allow.Allow
+                        : Allow.Deny
+                } as DaysOfWeekEnumDto)
+        );
+    };
+
     const rendeSpecificFields = () => {
         switch (tableName) {
             case "SchedulerBinaryEncoded":
@@ -238,7 +260,109 @@ export const EditModal = ({
                     </Grid2>
                 );
             case "SchedulerEnum":
-                return <>Enum</>;
+                return (
+                    <Grid2 container>
+                        <FormControl component="fieldset" variant="standard">
+                            <FormLabel component="legend">
+                                Days Of Week
+                            </FormLabel>
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.sunday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="sunday"
+                                        />
+                                    }
+                                    label="Sunday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.monday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="monday"
+                                        />
+                                    }
+                                    label="Monday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.tuesday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="tuesday"
+                                        />
+                                    }
+                                    label="Tuesday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.wednesday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="wednesday"
+                                        />
+                                    }
+                                    label="Wednesday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.thursday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="thursday"
+                                        />
+                                    }
+                                    label="Thursday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.friday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="friday"
+                                        />
+                                    }
+                                    label="Friday"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                schedulerEnum?.saturday ===
+                                                Allow.Allow
+                                            }
+                                            onChange={handleChangeSwitch}
+                                            name="saturday"
+                                        />
+                                    }
+                                    label="Saturday"
+                                />
+                            </FormGroup>
+                            {/* <FormHelperText>Be careful</FormHelperText> */}
+                        </FormControl>
+                    </Grid2>
+                );
             case "SchedulerStringArray":
                 return <>String Array</>;
             default:

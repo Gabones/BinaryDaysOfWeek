@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { DarkMode, LightMode } from "@mui/icons-material";
 import {
     Button,
     Container,
@@ -10,10 +10,10 @@ import {
     ThemeProvider,
     Typography
 } from "@mui/material";
-import TableComponent from "./Components/TableComponent";
+import { useState } from "react";
 import BinaryTable from "./Components/BinaryTableComponent";
+import TableComponent from "./Components/TableComponent";
 import { darkTheme, lightTheme } from "./themes";
-import { DarkMode, LightMode } from "@mui/icons-material";
 
 const App = () => {
     const [isDarkMode, setIsDarkMode] = useState(
